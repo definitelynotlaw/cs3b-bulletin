@@ -6,7 +6,22 @@ function e($value) {
 }
 function is_logged_in() { return isset($_SESSION['user']); }
 function user_role() { return $_SESSION['user']['role'] ?? null; }
-function is_officer_or_admin() { return in_array(user_role(), ['officer','admin'], true); }
+function role_label($role) {
+    $labels = [
+        'admin' => 'Admin',
+        'officer' => 'Officer',
+        'moderator' => 'Moderator',
+        'president' => 'President',
+        'vice_president' => 'Vice-President',
+        'secretary' => 'Secretary',
+        'treasurer' => 'Treasurer',
+    ];
+    return $labels[$role] ?? 'Officer';
+}
+function is_officer_or_admin() {
+    return in_array(user_role(), ['officer','admin','moderator','president','vice_president','secretary','treasurer'], true);
+}
+function is_admin() { return user_role() === 'admin'; }
 function require_login() {
     if (!is_logged_in()) {
         header('Location: login');
@@ -16,6 +31,13 @@ function require_login() {
 function require_officer() {
     require_login();
     if (!is_officer_or_admin()) {
+        http_response_code(403);
+        exit('Access denied.');
+    }
+}
+function require_admin() {
+    require_login();
+    if (!is_admin()) {
         http_response_code(403);
         exit('Access denied.');
     }
@@ -44,6 +66,19 @@ function upload_file($field, $dir, $allowed, $maxBytes) {
     $target = __DIR__ . '/' . trim($dir, '/') . '/' . $name;
     if (!move_uploaded_file($tmp, $target)) return null;
     return trim($dir, '/') . '/' . $name;
+}
+function social_url_is_valid($url, $network) {
+    if ($url === '') return true;
+    $parts = parse_url($url);
+    if (!$parts || strtolower($parts['scheme'] ?? '') !== 'https') return false;
+    $host = strtolower($parts['host'] ?? '');
+    if ($network === 'facebook') {
+        return $host === 'fb.com' || (bool)preg_match('/(^|\.)facebook\.com$/', $host);
+    }
+    if ($network === 'linkedin') {
+        return (bool)preg_match('/(^|\.)linkedin\.com$/', $host);
+    }
+    return false;
 }
 function embed_video_url($url) {
     $url = trim($url);

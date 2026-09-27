@@ -1,6 +1,12 @@
 Options -MultiViews
 RewriteEngine On
 
+# Public problem-report URL maps to the existing FormSubmit page.
+RewriteRule ^report-a-problem/?$ contact.php [L]
+
+# Preserve the app's hyphenated URLs for underscore-named PHP files.
+RewriteRule ^(announcement|save|delete|submit)-([a-z-]+)/?$ $1_$2.php [L]
+
 # Internally map extensionless requests to their PHP files.
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f

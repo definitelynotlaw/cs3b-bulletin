@@ -1,10 +1,10 @@
 <?php
 // CS3B : Bulletin - database configuration
 // Change these values for your hosting provider.
-$host = 'localhost';
-$db   = 'cs3b_bulletin';
-$user = 'root';
-$pass = '';
+$host = getenv('DB_HOST') ?: 'localhost';
+$db   = getenv('DB_NAME') ?: 'cs3b_bulletin';
+$user = getenv('DB_USER') ?: 'root';
+$pass = getenv('DB_PASS') ?: '';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

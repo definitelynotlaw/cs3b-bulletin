@@ -1,0 +1,15 @@
+<?php
+require 'config.php'; require 'functions.php';
+$officers = $pdo->query("SELECT name,role,photo_path,contact_email,facebook_url,linkedin_url FROM users WHERE role IN ('admin','officer','moderator','president','vice_president','secretary','treasurer') ORDER BY FIELD(role,'admin','moderator','president','vice_president','secretary','treasurer','officer'),name")->fetchAll();
+?>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Class Officers · CS3B</title><link rel="stylesheet" href="assets/style.css"><script src="assets/theme.js" defer></script></head><body>
+<header class="top"><div><strong>CS3B : Bulletin</strong><span>2026 – 2027</span></div><nav><a href="./">Home</a><a href="report-a-problem">Report a problem</a><?php if(is_logged_in()): ?><a href="profile">My Profile</a><a href="dashboard">Dashboard</a><a href="logout">Logout</a><?php endif; ?></nav></header>
+<main class="container"><div class="dashhead"><div><p class="eyebrow">MEET THE TEAM</p><h1>Class Officers</h1></div></div>
+<?php if(!$officers): ?><div class="card"><p>No officer profiles have been added yet.</p></div><?php endif; ?>
+<div class="officer-grid"><?php foreach($officers as $officer): ?><article class="card officer-card">
+<?php if($officer['photo_path']): ?><img class="officer-photo" src="<?=e($officer['photo_path'])?>" alt="<?=e($officer['name'])?> profile photo"><?php else: ?><div class="officer-photo officer-placeholder" aria-label="No photo uploaded for <?=e($officer['name'])?>"><?=e(strtoupper(substr($officer['name'], 0, 1)))?></div><?php endif; ?>
+<h2><?=e($officer['name'])?></h2><p class="officer-role"><?=e(role_label($officer['role']))?></p><div class="social-links">
+<?php if($officer['facebook_url']): ?><a class="social-link" href="<?=e($officer['facebook_url'])?>" target="_blank" rel="noopener noreferrer" aria-label="<?=e($officer['name'])?> on Facebook"><span aria-hidden="true">f</span></a><?php else: ?><span class="social-link unavailable" role="img" aria-label="Facebook profile not provided"><span aria-hidden="true">f</span></span><?php endif; ?>
+<?php if($officer['contact_email']): ?><a class="social-link" href="mailto:<?=e($officer['contact_email'])?>" aria-label="Email <?=e($officer['name'])?>"><span aria-hidden="true">&#9993;</span></a><?php else: ?><span class="social-link unavailable" role="img" aria-label="Public email not provided"><span aria-hidden="true">&#9993;</span></span><?php endif; ?>
+<?php if($officer['linkedin_url']): ?><a class="social-link" href="<?=e($officer['linkedin_url'])?>" target="_blank" rel="noopener noreferrer" aria-label="<?=e($officer['name'])?> on LinkedIn"><span aria-hidden="true">in</span></a><?php else: ?><span class="social-link unavailable" role="img" aria-label="LinkedIn profile not provided"><span aria-hidden="true">in</span></span><?php endif; ?>
+</div></article><?php endforeach; ?></div></main><footer>CS3B : Bulletin · 2026 – 2027</footer></body></html>
