@@ -17,46 +17,133 @@ $posts = $stmt->fetchAll();
 <?php $embed=embed_video_url($p['video_url']); if($embed): ?><div class="video"><iframe src="<?=e($embed)?>" title="Announcement video" allowfullscreen></iframe></div><?php elseif($p['video_url']): ?><p><a href="<?=e($p['video_url'])?>" target="_blank" rel="noopener">Watch linked video ↗</a></p><?php endif; ?>
 <p><?=nl2br(e($p['caption']))?></p><div class="postfoot"><small>Posted by <strong><?=e($p['author'])?></strong> · <?=e(role_label($p['author_role']))?></small><form method="post" action="upvote"><input type="hidden" name="announcement_id" value="<?=$p['id']?>"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>"><button class="upvote" type="submit" aria-label="Acknowledge this announcement. <?=e($p['upvotes'])?> total acknowledgements.">Acknowledge <span class="acknowledgement-count" aria-hidden="true"><?=e($p['upvotes'])?></span></button></form></div>
 </article><?php endforeach; ?></div></main>
-<div class="lightbox" hidden aria-label="Expanded announcement image">
-  <button class="lightbox-close" type="button" aria-label="Close image">×</button>
-  <img alt="Expanded announcement image">
+<style>
+  .media-trigger { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
+  .lightbox[hidden] { display: none; }
+  .lightbox { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; background: rgba(0, 0, 0, .92); overflow: hidden; touch-action: none; }
+  .lightbox-toolbar { position: absolute; top: 16px; right: 16px; z-index: 2; display: flex; gap: 8px; }
+  .lightbox-toolbar button { width: 44px; height: 44px; padding: 0; border: 1px solid rgba(255, 255, 255, .35); border-radius: 6px; color: #fff; background: rgba(20, 20, 20, .8); font: 700 24px/1 Arial, sans-serif; cursor: pointer; }
+  .lightbox-toolbar button:hover, .lightbox-toolbar button:focus-visible { background: #fff; color: #111; outline: none; }
+  .lightbox-stage { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: grab; }
+  .lightbox-stage.dragging { cursor: grabbing; }
+  .lightbox img { display: block; max-width: 92vw; max-height: 90vh; object-fit: contain; user-select: none; -webkit-user-drag: none; transform-origin: center center; will-change: transform; }
+  body.lightbox-open { overflow: hidden; }
+  @media (max-width: 600px) { .lightbox-toolbar { top: 10px; right: 10px; } .lightbox-toolbar button { width: 42px; height: 42px; } }
+</style>
+<div class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Expanded announcement image">
+  <div class="lightbox-toolbar" aria-label="Image controls">
+    <button class="lightbox-zoom-out" type="button" aria-label="Zoom out">−</button>
+    <button class="lightbox-reset" type="button" aria-label="Reset zoom">↺</button>
+    <button class="lightbox-zoom-in" type="button" aria-label="Zoom in">+</button>
+    <button class="lightbox-close" type="button" aria-label="Close image">×</button>
+  </div>
+  <div class="lightbox-stage">
+    <img alt="Expanded announcement image">
+  </div>
 </div>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', function () {
     const lightbox = document.querySelector('.lightbox');
-    const lightboxImage = lightbox ? lightbox.querySelector('img') : null;
-    const closeButton = lightbox ? lightbox.querySelector('.lightbox-close') : null;
-    const triggers = document.querySelectorAll('.media-trigger');
+    if (!lightbox) return;
 
-    const closeLightbox = () => {
-      if (!lightbox) return;
+    const stage = lightbox.querySelector('.lightbox-stage');
+    const image = lightbox.querySelector('img');
+    const closeButton = lightbox.querySelector('.lightbox-close');
+    const zoomInButton = lightbox.querySelector('.lightbox-zoom-in');
+    const zoomOutButton = lightbox.querySelector('.lightbox-zoom-out');
+    const resetButton = lightbox.querySelector('.lightbox-reset');
+    let scale = 1;
+    let x = 0;
+    let y = 0;
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+    let previousFocus = null;
+
+    function render() {
+      image.style.transform = 'translate(' + x + 'px, ' + y + 'px) scale(' + scale + ')';
+    }
+
+    function resetView() {
+      scale = 1;
+      x = 0;
+      y = 0;
+      render();
+    }
+
+    function zoom(amount) {
+      scale = Math.min(6, Math.max(0.5, scale + amount));
+      if (scale <= 1) { x = 0; y = 0; }
+      render();
+    }
+
+    function openLightbox(trigger) {
+      previousFocus = trigger;
+      image.src = trigger.dataset.lightbox;
+      image.alt = trigger.querySelector('img')?.alt || 'Expanded announcement image';
+      resetView();
+      lightbox.hidden = false;
+      document.body.classList.add('lightbox-open');
+      closeButton.focus();
+    }
+
+    function closeLightbox() {
       lightbox.hidden = true;
       document.body.classList.remove('lightbox-open');
-      if (lightboxImage) lightboxImage.src = '';
-      if (lightboxImage) lightboxImage.alt = 'Expanded announcement image';
-    };
+      image.src = '';
+      resetView();
+      if (previousFocus) previousFocus.focus();
+    }
 
-    triggers.forEach((trigger) => {
-      trigger.addEventListener('click', () => {
-        if (!lightbox || !lightboxImage) return;
-        const src = trigger.dataset.lightbox || trigger.querySelector('img')?.src;
-        if (!src) return;
-        lightboxImage.src = src;
-        lightboxImage.alt = trigger.getAttribute('aria-label') || 'Expanded announcement image';
-        lightbox.hidden = false;
-        document.body.classList.add('lightbox-open');
-      });
+    document.querySelectorAll('.media-trigger').forEach(function (trigger) {
+      trigger.addEventListener('click', function () { openLightbox(trigger); });
     });
 
-    if (closeButton) closeButton.addEventListener('click', closeLightbox);
-    if (lightbox) {
-      lightbox.addEventListener('click', (event) => {
-        if (event.target === lightbox) closeLightbox();
-      });
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
-      });
+    closeButton.addEventListener('click', closeLightbox);
+    zoomInButton.addEventListener('click', function () { zoom(0.25); });
+    zoomOutButton.addEventListener('click', function () { zoom(-0.25); });
+    resetButton.addEventListener('click', resetView);
+
+    stage.addEventListener('dblclick', function () { zoom(scale === 1 ? 1 : 1 - scale); });
+    stage.addEventListener('wheel', function (event) {
+      event.preventDefault();
+      zoom(event.deltaY < 0 ? 0.25 : -0.25);
+    }, { passive: false });
+
+    stage.addEventListener('pointerdown', function (event) {
+      if (scale <= 1) return;
+      dragging = true;
+      startX = event.clientX - x;
+      startY = event.clientY - y;
+      stage.classList.add('dragging');
+      stage.setPointerCapture(event.pointerId);
+    });
+
+    stage.addEventListener('pointermove', function (event) {
+      if (!dragging) return;
+      x = event.clientX - startX;
+      y = event.clientY - startY;
+      render();
+    });
+
+    function stopDragging() {
+      dragging = false;
+      stage.classList.remove('dragging');
     }
+    stage.addEventListener('pointerup', stopDragging);
+    stage.addEventListener('pointercancel', stopDragging);
+
+    lightbox.addEventListener('click', function (event) {
+      if (event.target === stage) closeLightbox();
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (lightbox.hidden) return;
+      if (event.key === 'Escape') closeLightbox();
+      if (event.key === '+' || event.key === '=') zoom(0.25);
+      if (event.key === '-') zoom(-0.25);
+      if (event.key === '0') resetView();
+    });
   });
 </script>
 <footer>CS3B : Bulletin · 2026 – 2027</footer></body></html>
