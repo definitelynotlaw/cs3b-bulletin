@@ -228,6 +228,7 @@ h2 { margin: 0 0 var(--space-4); font-size: 1.45rem; }
 }
 
 .upvote { padding: 8px 13px; color: var(--text); background: var(--surface-strong); }
+.acknowledgement-count { min-width: 25px; height: 25px; display: inline-grid; place-items: center; margin-left: 5px; padding: 0 6px; color: var(--accent); background: var(--accent-soft); border-radius: 999px; font-size: .82rem; font-variant-numeric: tabular-nums; }
 .theme-toggle {
 	width: 40px;
 	min-width: 40px;

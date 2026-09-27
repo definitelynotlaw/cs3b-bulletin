@@ -6,13 +6,14 @@ A PHP + MySQL class bulletin for BSCS 3B.
 - Public announcements
 - Image and video uploads
 - YouTube/Vimeo hyperlinked video embeds
-- Visitor upvotes without login
+- Visitor acknowledgements without login, with a visible count per announcement
 - Officer/admin login
 - Officer directory with profile photos and social links
 - Signed-in password changes and Admin password recovery
 - Announcement CRUD
 - Draft/published status
 - Contact form for concerns, issues, reports, suggestions
+- Problem reports saved to the officer dashboard and forwarded by email
 - Private report management
 - CSRF protection and prepared SQL statements
 
