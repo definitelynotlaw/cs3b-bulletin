@@ -126,4 +126,32 @@
       return;
     }
   });
+
+  const lightbox = document.querySelector('.lightbox');
+  document.querySelectorAll('[data-lightbox]').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      if (!lightbox) return;
+      const image = lightbox.querySelector('img');
+      if (!image) return;
+      image.src = trigger.dataset.lightbox;
+      image.alt = trigger.getAttribute('aria-label') || 'Expanded announcement image';
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  if (lightbox) {
+    const closeButton = lightbox.querySelector('.lightbox-close');
+    const close = () => {
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+    };
+    closeButton?.addEventListener('click', close);
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) close();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !lightbox.hidden) close();
+    });
+  }
 })();
