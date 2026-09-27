@@ -14,7 +14,6 @@ $posts = $stmt->fetchAll();
 <article class="card"><div class="meta"><span class="category"><?=e($p['category'])?></span><time class="date" datetime="<?=e(date('c', strtotime($p['created_at'])))?>"><?=e(date('M d, Y', strtotime($p['created_at'])))?></time></div>
 <h3><?=e($p['title'])?></h3>
 <?php if($p['image_path']): ?><img class="media" src="<?=e($p['image_path'])?>" alt="Announcement image"><?php endif; ?>
-<?php if($p['video_path']): ?><video class="media" controls src="<?=e($p['video_path'])?>"></video><?php endif; ?>
 <?php $embed=embed_video_url($p['video_url']); if($embed): ?><div class="video"><iframe src="<?=e($embed)?>" title="Announcement video" allowfullscreen></iframe></div><?php elseif($p['video_url']): ?><p><a href="<?=e($p['video_url'])?>" target="_blank" rel="noopener">Watch linked video ↗</a></p><?php endif; ?>
 <p><?=nl2br(e($p['caption']))?></p><div class="postfoot"><small>Posted by <strong><?=e($p['author'])?></strong> · <?=e(role_label($p['author_role']))?></small><form method="post" action="upvote"><input type="hidden" name="announcement_id" value="<?=$p['id']?>"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>"><button class="upvote" type="submit" aria-label="Acknowledge this announcement. <?=e($p['upvotes'])?> total acknowledgements.">Acknowledge <span class="acknowledgement-count" aria-hidden="true"><?=e($p['upvotes'])?></span></button></form></div>
 </article><?php endforeach; ?></div></main><footer>CS3B : Bulletin · 2026 – 2027</footer></body></html>
