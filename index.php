@@ -20,15 +20,18 @@ $posts = $stmt->fetchAll();
 <style>
   .media-trigger { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
   .lightbox[hidden] { display: none; }
-  .lightbox { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; background: rgba(0, 0, 0, .92); overflow: hidden; touch-action: none; }
-  .lightbox-toolbar { position: absolute; top: 16px; right: 16px; z-index: 2; display: flex; gap: 8px; }
-  .lightbox-toolbar button { width: 44px; height: 44px; padding: 0; border: 1px solid rgba(255, 255, 255, .35); border-radius: 6px; color: #fff; background: rgba(20, 20, 20, .8); font: 700 24px/1 Arial, sans-serif; cursor: pointer; }
-  .lightbox-toolbar button:hover, .lightbox-toolbar button:focus-visible { background: #fff; color: #111; outline: none; }
-  .lightbox-stage { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: grab; }
+  .lightbox { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; background: rgba(10, 10, 10, .94); overflow: hidden; touch-action: none; }
+  .lightbox-toolbar { position: absolute; top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); z-index: 2; display: flex; gap: 8px; }
+  .lightbox-toolbar button { width: 44px; height: 44px; padding: 0; border: 1px solid rgba(255, 255, 255, .32); border-radius: 4px; color: #fff; background: #202020; font: inherit; font-size: 24px; font-weight: 700; line-height: 1; cursor: pointer; }
+  .lightbox-toolbar button:hover { background: #fff; color: #111; }
+  .lightbox-toolbar button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .lightbox-toolbar .lightbox-close { position: static; min-width: 0; min-height: 0; }
+  .lightbox-toolbar .lightbox-close:hover { background: #fff; color: #111; }
+  .lightbox-stage { width: 100%; height: 100%; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 68px 16px 16px; overflow: hidden; cursor: grab; }
   .lightbox-stage.dragging { cursor: grabbing; }
-  .lightbox img { display: block; max-width: 92vw; max-height: 90vh; object-fit: contain; user-select: none; -webkit-user-drag: none; transform-origin: center center; will-change: transform; }
+  .lightbox img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; transform-origin: center center; will-change: transform; }
   body.lightbox-open { overflow: hidden; }
-  @media (max-width: 600px) { .lightbox-toolbar { top: 10px; right: 10px; } .lightbox-toolbar button { width: 42px; height: 42px; } }
+  @media (max-width: 600px) { .lightbox-toolbar { top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); gap: 6px; } .lightbox-toolbar button { width: 42px; height: 42px; } .lightbox-stage { padding: 64px 10px max(10px, env(safe-area-inset-bottom)); } }
 </style>
 <div class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Expanded announcement image">
   <div class="lightbox-toolbar" aria-label="Image controls">
