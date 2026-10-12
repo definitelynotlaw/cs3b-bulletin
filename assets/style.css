@@ -144,7 +144,7 @@ h1, h2, h3 { color: var(--text); line-height: 1.25; }
 h1 { margin-top: 0; font-size: clamp(1.8rem, 3vw, 2.5rem); }
 h2 { margin: 0 0 var(--space-4); font-size: 1.45rem; }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--space-4); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); align-items: stretch; gap: var(--space-4); }
 
 .card {
 	padding: var(--space-5);
@@ -262,7 +262,7 @@ h2 { margin: 0 0 var(--space-4); font-size: 1.45rem; }
 .video { position: relative; margin: var(--space-3) 0; padding-top: 56.25%; overflow: hidden; border-radius: var(--radius-sm); background: #080d18; }
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-.postfoot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--border); }
+.postfoot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: var(--space-5); padding-top: var(--space-4); }
 .postfoot small { color: var(--muted); }
 
 .upvote, .primary, .theme-toggle {
@@ -430,29 +430,28 @@ footer { flex: 0 0 auto; margin-top: auto; padding: var(--space-4) max(4%, calc(
 
 	.announcement-card__footer {
 		margin-top: auto;
-		padding-top: 1rem;
-		display: flex;
-		flex-wrap: wrap;
+		padding-top: var(--space-4);
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.5fr);
 		align-items: center;
-		gap: .75rem;
+		gap: var(--space-3);
 		min-width: 0;
 		border-top: 1px solid var(--border);
 	}
 
-	.announcement-card__footer > small {
+	.announcement-card__author,
+	.announcement-card__direct-link,
+	.announcement-card__acknowledgments {
 		min-width: 0;
-		overflow-wrap: anywhere;
-	}
-
-	.announcement-card__footer .post-actions {
-		flex: 1 1 100%;
-	}
-
-	.announcement-card__footer a,
-	.announcement-card__footer button {
 		max-width: 100%;
 		overflow-wrap: anywhere;
 	}
+
+	.announcement-card__author { color: var(--muted); font-size: .82rem; }
+	.announcement-card__acknowledgments { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2); }
+	.announcement-card__acknowledgments form { min-width: 0; max-width: 100%; margin: 0; }
+	.announcement-card__acknowledgments button { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+	.announcement-card__direct-link { font-size: .88rem; font-weight: 650; }
 
 	.announcement-card img,
 	.announcement-card iframe {
@@ -461,10 +460,19 @@ footer { flex: 0 0 auto; margin-top: auto; padding: var(--space-4) max(4%, calc(
 
 	@media (max-width: 480px) {
 		.announcement-card__footer {
-			align-items: flex-start;
+			grid-template-columns: minmax(0, 1fr) auto;
+			align-items: start;
 		}
-		.announcement-card__footer .post-actions {
-			width: 100%;
-			align-items: stretch;
+		.announcement-card__author,
+		.announcement-card__acknowledgments {
+			grid-column: 1 / -1;
+			justify-content: flex-start;
 		}
+	}
+
+	@media (max-width: 359px) {
+		.announcement-card__footer { grid-template-columns: minmax(0, 1fr); }
+		.announcement-card__author,
+		.announcement-card__direct-link,
+		.announcement-card__acknowledgments { grid-column: 1; }
 	}
