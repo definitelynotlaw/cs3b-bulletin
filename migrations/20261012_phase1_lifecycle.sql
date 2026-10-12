@@ -1,0 +1,17 @@
+ALTER TABLE announcements
+	MODIFY status ENUM('draft','scheduled','published') NOT NULL DEFAULT 'draft',
+	ADD COLUMN publish_at DATETIME NULL,
+	ADD COLUMN published_at DATETIME NULL,
+	ADD COLUMN expires_at DATETIME NULL,
+	ADD COLUMN event_date DATE NULL,
+	ADD COLUMN event_start TIME NULL,
+	ADD COLUMN event_end TIME NULL,
+	ADD COLUMN event_all_day TINYINT(1) NOT NULL DEFAULT 1,
+	ADD COLUMN deadline_date DATE NULL,
+	ADD COLUMN deadline_time TIME NULL,
+	ADD COLUMN deadline_all_day TINYINT(1) NOT NULL DEFAULT 1,
+	ADD COLUMN version INT UNSIGNED NOT NULL DEFAULT 1,
+	ADD KEY idx_ann_publication (status, publish_at, published_at),
+	ADD KEY idx_ann_expiration (expires_at),
+	ADD KEY idx_ann_event_date (event_date),
+	ADD KEY idx_ann_deadline_date (deadline_date);

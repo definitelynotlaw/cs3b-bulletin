@@ -10,7 +10,7 @@ CREATE TABLE users (
  facebook_url VARCHAR(500) NULL,
  linkedin_url VARCHAR(500) NULL,
  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB;
 INSERT INTO users (name,email,password,default_password,role,contact_email,facebook_url,linkedin_url) VALUES
 ('Lawrence','admin@cs3b-bulletin.local','$2y$10$1MyOsynvtKwByMgHNMGWi.5ZHU/7tf7tblaVo3o0r8z/TnFmYIDBS','$2y$10$1MyOsynvtKwByMgHNMGWi.5ZHU/7tf7tblaVo3o0r8z/TnFmYIDBS','admin','alibangbanglawrencejohn_bscs@plmun.edu.ph','https://www.facebook.com/Laaawrence','https://www.linkedin.com/in/laaawrence/'),
 ('Moderator','moderator@cs3b-bulletin.local','$2y$10$QNOf.OdlG8oMkDfE4NqnDupz2FrthCGbfXU9t8JAmTXM/RDW0UBNy','$2y$10$QNOf.OdlG8oMkDfE4NqnDupz2FrthCGbfXU9t8JAmTXM/RDW0UBNy','moderator',NULL,NULL,NULL),
@@ -32,7 +32,7 @@ CREATE TABLE announcements (
  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
  CONSTRAINT fk_ann_author FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
 CREATE TABLE announcement_upvotes (
  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  announcement_id INT UNSIGNED NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE announcement_upvotes (
  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
  UNIQUE KEY one_vote (announcement_id, visitor_identifier),
  CONSTRAINT fk_vote_ann FOREIGN KEY (announcement_id) REFERENCES announcements(id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE reports (
  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -55,6 +55,6 @@ CREATE TABLE reports (
  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
  CONSTRAINT fk_report_handler FOREIGN KEY (handled_by) REFERENCES users(id) ON DELETE SET NULL
-);
+) ENGINE=InnoDB;
  -- Seed account passwords are provided separately; replace them after deployment.
 -- Import this file into the hosting database selected in phpMyAdmin.
