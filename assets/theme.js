@@ -127,6 +127,66 @@
     }
   });
 
+  const filterTriggers = document.querySelectorAll('.filter-trigger[aria-controls]');
+  let openFilter = null;
+
+  const closeFilter = (returnFocus = false) => {
+    if (!openFilter) return;
+    const { trigger, panel } = openFilter;
+    panel.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    openFilter = null;
+    if (returnFocus) trigger.focus();
+  };
+
+  const positionFilter = () => {
+    if (!openFilter) return;
+    const { trigger, panel } = openFilter;
+    const triggerRect = trigger.getBoundingClientRect();
+    const panelRect = panel.getBoundingClientRect();
+    const margin = 12;
+    const left = Math.max(margin, Math.min(
+      triggerRect.left + triggerRect.width / 2 - panelRect.width / 2,
+      document.documentElement.clientWidth - panelRect.width - margin
+    ));
+    const below = triggerRect.bottom + 8;
+    const above = triggerRect.top - panelRect.height - 8;
+    const maxTop = Math.max(margin, window.innerHeight - panelRect.height - margin);
+    const top = Math.min(Math.max(below + panelRect.height <= window.innerHeight - margin ? below : above, margin), maxTop);
+    panel.style.left = `${left}px`;
+    panel.style.top = `${top}px`;
+  };
+
+  filterTriggers.forEach((trigger) => {
+    const panel = document.getElementById(trigger.getAttribute('aria-controls'));
+    if (!panel) return;
+    trigger.addEventListener('click', () => {
+      if (openFilter?.trigger === trigger) {
+        closeFilter();
+        return;
+      }
+      closeFilter();
+      panel.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      openFilter = { trigger, panel };
+      positionFilter();
+      panel.querySelector('input, select, button')?.focus();
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (openFilter && !openFilter.panel.contains(event.target) && !openFilter.trigger.contains(event.target)) {
+      closeFilter();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && openFilter) closeFilter(true);
+  });
+
+  window.addEventListener('resize', positionFilter);
+  window.addEventListener('scroll', positionFilter, true);
+
   const lightbox = document.querySelector('.lightbox');
   document.querySelectorAll('[data-lightbox]').forEach((trigger) => {
     trigger.addEventListener('click', () => {
