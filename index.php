@@ -85,9 +85,9 @@ $stmt->execute(array_merge($ackSelectParams, $params));
 $posts = $stmt->fetchAll();
 if ($detailId !== null && !$posts) { http_response_code(404); exit('Announcement not found.'); }
 ?>
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CS3B : Bulletin</title><link rel="stylesheet" href="assets/style.css?v=20261012-announcement-lifecycle"><script src="assets/theme.js?v=20261012-announcement-lifecycle" defer></script></head><body>
-<header class="top"><div><strong>CS3B : Bulletin</strong><span>2026 – 2027</span></div>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#183B70">
+<title>CS3B : Bulletin</title><link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/style.css?v=20261012-announcement-lifecycle"><script src="assets/theme.js?v=20261012-announcement-lifecycle" defer></script></head><body>
+<header class="top"><div class="site-brand-wrap"><a href="./" class="site-brand" aria-label="Pilimon Bulletin home"><img class="site-brand__logo" src="assets/brand/pilimon-bulletin-wordmark-light.svg" alt="Pilimon Bulletin"><span class="site-brand__meta">2026 – 2027</span></a></div>
 <nav><a href="./">Home</a><a href="calendar">Calendar</a><a href="officers">Officers</a><a href="report-a-problem">Report a problem</a><?php if(is_logged_in()): ?><a href="profile">My Profile</a><a href="change-password">Change Password</a><a href="dashboard">Dashboard</a><a href="logout">Logout</a><?php endif; ?></nav></header>
 <main class="container"><section class="hero"><p class="eyebrow">BSCS 3B • Academic Year 2026–2027</p><h1>Your class. Your updates. One bulletin.</h1><p>Announcements, class updates, resources, and a direct channel for concerns and reports.</p></section>
 <?php if($detailId === null): ?><form class="bulletin-filters" method="get" action="./"><?php if($archiveView): ?><input type="hidden" name="archive" value="1"><?php if($staffView && $statusInput !== ''): ?><input type="hidden" name="status" value="<?=e($statusInput)?>"><?php endif; ?><?php endif; ?>

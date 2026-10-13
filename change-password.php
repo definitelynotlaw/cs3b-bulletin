@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Change Password · CS3B</title><link rel="stylesheet" href="assets/style.css"><script src="assets/theme.js" defer></script></head><body>
-<header class="top"><div><strong>CS3B : Bulletin</strong><span><?=e(role_label(user_role()))?></span></div><nav><a href="dashboard">Dashboard</a><a href="profile">My Profile</a><a href="logout">Logout</a></nav></header>
+<header class="top"><div class="site-brand-wrap"><a href="./" class="site-brand" aria-label="Pilimon Bulletin home"><img class="site-brand__logo" src="assets/brand/pilimon-bulletin-wordmark-light.svg" alt="Pilimon Bulletin"><span class="site-brand__meta"><?=e(role_label(user_role()))?></span></a></div><nav><a href="dashboard">Dashboard</a><a href="profile">My Profile</a><a href="logout">Logout</a></nav></header>
 <main class="container narrow"><div class="dashhead"><h1>Change Password</h1><a href="dashboard">Back to dashboard</a></div>
 <?php if($error): ?><p class="alert" role="alert"><?=e($error)?></p><?php endif; ?>
 <?php if(isset($_GET['updated'])): ?><p class="alert success" role="status">Your password has been changed.</p><?php endif; ?>

@@ -38,6 +38,15 @@
     button.replaceChildren(createThemeIcon(isDark));
   };
 
+  const updateBrandLogo = (theme) => {
+    document.querySelectorAll('.site-brand__logo').forEach((img) => {
+      img.src = theme === 'dark'
+        ? 'assets/brand/pilimon-bulletin-wordmark-dark.svg'
+        : 'assets/brand/pilimon-bulletin-wordmark-light.svg';
+      img.alt = 'Pilimon Bulletin';
+    });
+  };
+
   let savedTheme;
   try {
     savedTheme = localStorage.getItem(storageKey);
@@ -48,6 +57,8 @@
   if (savedTheme === 'light' || savedTheme === 'dark') {
     root.dataset.theme = savedTheme;
   }
+
+  updateBrandLogo(root.dataset.theme === 'dark' ? 'dark' : 'light');
 
   const button = document.createElement('button');
   button.type = 'button';
@@ -120,6 +131,7 @@
     const theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
     root.dataset.theme = theme;
     updateToggle(theme, button);
+    updateBrandLogo(theme);
     try {
       localStorage.setItem(storageKey, theme);
     } catch {
