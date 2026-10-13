@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Change Password · CS3B</title><link rel="stylesheet" href="assets/style.css?v=<?=asset_version("assets/style.css")?>"><script src="assets/theme.js?v=<?=asset_version("assets/theme.js")?>" defer></script></head><body>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Change Password · CS3B</title><link rel="icon" href="/assets/brand/favicon.svg?v=<?=asset_version("assets/brand/favicon.svg")?>" type="image/svg+xml"><link rel="stylesheet" href="assets/style.css?v=<?=asset_version("assets/style.css")?>"><script src="assets/theme.js?v=<?=asset_version("assets/theme.js")?>" defer></script></head><body>
 <header class="top"><div class="site-brand-wrap"><a href="./" class="site-brand" aria-label="Pilimon Bulletin home"><img class="site-brand__logo" src="assets/brand/pilimon-bulletin-wordmark-light.svg" alt="Pilimon Bulletin"><span class="site-brand__meta" aria-hidden="true"></span></a></div><nav><a href="./">Home</a><a href="calendar">Calendar</a><a href="officers">Officers</a><a href="report-a-problem">Report a problem</a><a href="dashboard">Dashboard</a><a href="profile">My Profile</a><a href="change-password">Change Password</a><a href="logout">Logout</a></nav></header>
 <main class="container narrow"><div class="dashhead"><h1>Change Password</h1><a href="dashboard">Back to dashboard</a></div>
 <?php if($error): ?><p class="alert" role="alert"><?=e($error)?></p><?php endif; ?>

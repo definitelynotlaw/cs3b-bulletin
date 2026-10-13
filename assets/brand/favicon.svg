@@ -1,10 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
   <title id="title">Pilimon Bulletin favicon</title>
-  <desc id="desc">A compact geometric P for the Pilimon Bulletin favicon.</desc>
-  <path d="M36 16v96h35c27 0 45-17 45-42S98 16 71 16H36zm16 16h14c17 0 29 10 29 26s-12 26-29 26H52V32z" fill="#101828"/>
-  <g fill="#101828">
-    <rect x="50" y="42" width="24" height="6" rx="3"/>
-    <rect x="50" y="56" width="30" height="6" rx="3"/>
-    <rect x="50" y="70" width="22" height="6" rx="3"/>
+  <desc id="desc">A centered blue geometric P on a light tile for contrast in browser tabs.</desc>
+  <rect x="2" y="2" width="124" height="124" rx="22" fill="#FFFFFF" stroke="#DCE5EE" stroke-width="2"/>
+  <g transform="translate(-12 0)" fill="#183B70">
+    <path d="M36 16v96h35c27 0 45-17 45-42S98 16 71 16H36zm16 16h14c17 0 29 10 29 26s-12 26-29 26H52V32z"/>
+    <rect x="50" y="41" width="24" height="8" rx="4"/>
+    <rect x="50" y="55" width="30" height="8" rx="4"/>
+    <rect x="50" y="69" width="22" height="8" rx="4"/>
   </g>
 </svg>
