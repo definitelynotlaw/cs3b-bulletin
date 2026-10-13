@@ -24,6 +24,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   }
 
   if($authenticated){
+    session_regenerate_id(true);
     $_SESSION['user']=['id'=>$u['id'],'name'=>$u['name'],'email'=>$u['email'],'role'=>$u['role']];
     header('Location:dashboard');
     exit;

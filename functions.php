@@ -1,5 +1,20 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.use_strict_mode', '1');
+    ini_set('session.use_only_cookies', '1');
+    $cookieParams = session_get_cookie_params();
+    $httpsRequest = in_array(strtolower((string)($_SERVER['HTTPS'] ?? '')), ['on', '1'], true)
+        || (string)($_SERVER['SERVER_PORT'] ?? '') === '443';
+    session_set_cookie_params([
+        'lifetime' => $cookieParams['lifetime'],
+        'path' => $cookieParams['path'] ?: '/',
+        'domain' => $cookieParams['domain'],
+        'secure' => $httpsRequest,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+    session_start();
+}
 
 function e($value) {
     return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
