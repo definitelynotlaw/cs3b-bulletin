@@ -5,7 +5,7 @@ RewriteEngine On
 RewriteRule ^report-a-problem/?$ contact.php [L]
 
 # Preserve the app's hyphenated URLs for underscore-named PHP files.
-RewriteRule ^(announcement|save|delete|submit)-([a-z-]+)/?$ $1_$2.php [L]
+RewriteRule ^(announcement|archive|save|delete|submit)-([a-z-]+)/?$ $1_$2.php [L]
 
 # Internally map extensionless requests to their PHP files.
 RewriteCond %{REQUEST_FILENAME} !-d

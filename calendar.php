@@ -11,7 +11,7 @@ $monthEnd = $monthDate->modify('first day of next month')->format('Y-m-d');
 $now = campus_now();
 $rangeStart = $view === 'month' ? $monthStart : $now->modify('-14 days')->format('Y-m-d');
 $rangeEnd = $view === 'month' ? $monthEnd : $now->modify('+90 days')->format('Y-m-d');
-$visible = "a.status='published' AND (a.published_at IS NULL OR a.published_at<=?) AND (a.expires_at IS NULL OR a.expires_at>?)";
+$visible = "a.status='published' AND a.archived_at IS NULL AND a.deleted_at IS NULL AND (a.published_at IS NULL OR a.published_at<=?) AND (a.expires_at IS NULL OR a.expires_at>?)";
 $statement = $pdo->prepare("SELECT a.id,a.title,a.category,a.event_date,a.event_start,a.event_all_day,a.deadline_date,a.deadline_time,a.deadline_all_day FROM announcements a WHERE $visible AND ((a.event_date>=? AND a.event_date<?) OR (a.deadline_date>=? AND a.deadline_date<?)) ORDER BY COALESCE(a.event_date,a.deadline_date),a.event_start,a.deadline_time,a.id");
 $statement->execute([$now->format('Y-m-d H:i:s'), $now->format('Y-m-d H:i:s'), $rangeStart, $rangeEnd, $rangeStart, $rangeEnd]);
 $rows = $statement->fetchAll();

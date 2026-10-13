@@ -222,6 +222,8 @@ h2 { margin: 0 0 var(--space-4); font-size: 1.45rem; }
 .filter-trigger__label { color: var(--muted); font-size: .74rem; font-weight: 650; line-height: 1.25; }
 .filter-trigger:hover .filter-trigger__icon, .filter-trigger[aria-expanded="true"] .filter-trigger__icon { background: var(--accent-soft); border-color: var(--maroon); transform: translateY(-1px); }
 .filter-trigger:hover .filter-trigger__label, .filter-trigger[aria-expanded="true"] .filter-trigger__label { color: var(--maroon); }
+.filter-trigger[aria-current="page"] .filter-trigger__icon { background: var(--accent-soft); border-color: var(--maroon); }
+.filter-trigger[aria-current="page"] .filter-trigger__label { color: var(--maroon); }
 .filter-trigger:disabled { cursor: not-allowed; opacity: .52; }
 .filter-trigger:disabled:hover .filter-trigger__icon { background: var(--surface-strong); border-color: var(--border-strong); transform: none; }
 .filter-count { position: absolute; top: -2px; right: 3px; min-width: 18px; height: 18px; display: grid; place-items: center; padding: 0 4px; color: #fff; background: var(--maroon); border: 2px solid var(--page); border-radius: 999px; font-size: .65rem; font-weight: 750; line-height: 1; }
@@ -232,6 +234,9 @@ h2 { margin: 0 0 var(--space-4); font-size: 1.45rem; }
 .filter-popover .primary { min-height: 40px; padding: 7px 13px; }
 .filter-date-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .filter-date-fields label { min-width: 0; }
+.archive-return { margin: 0 0 var(--space-2); font-size: .9rem; font-weight: 650; }
+.archive-reason, .lifecycle-state { color: var(--muted); font-size: .78rem; font-weight: 650; }
+.destructive-action { color: var(--danger); }
 .announcement-title { color: inherit; }
 .announcement-title:hover { color: var(--accent); }
 .announcement-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 var(--space-3); }
@@ -426,9 +431,9 @@ footer { flex: 0 0 auto; margin-top: auto; padding: var(--space-4) max(4%, calc(
 	.bulletin-filters { gap: 12px; margin-bottom: var(--space-4); }
 	.bulletin-search { height: 54px; border-radius: 8px; }
 	.bulletin-search__submit { width: 42px; height: 42px; flex-basis: 42px; }
-	.filter-controls { column-gap: 8px; }
-	.filter-trigger { width: 56px; min-height: 63px; grid-template-rows: 44px auto; }
-	.filter-trigger__label { font-size: .69rem; }
+	.filter-controls { column-gap: 5px; }
+	.filter-trigger { width: 50px; min-width: 44px; min-height: 63px; grid-template-rows: 44px auto; }
+	.filter-trigger__label { font-size: .64rem; }
 	.filter-popover { padding: 13px; }
 	.calendar-day { min-height: 82px; padding: 4px; }
 	.calendar-weekday { padding: 6px 2px; font-size: .7rem; }
@@ -439,9 +444,9 @@ footer { flex: 0 0 auto; margin-top: auto; padding: var(--space-4) max(4%, calc(
 }
 
 @media (max-width: 359px) {
-	.filter-controls { column-gap: 5px; }
-	.filter-trigger { width: 54px; }
-	.filter-trigger__label { font-size: .66rem; }
+	.filter-controls { column-gap: 1px; }
+	.filter-trigger { width: 46px; min-width: 44px; }
+	.filter-trigger__label { font-size: .6rem; }
 	.filter-date-fields { grid-template-columns: minmax(0, 1fr); }
 }
 

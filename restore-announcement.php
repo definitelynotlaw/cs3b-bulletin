@@ -8,7 +8,7 @@ $expectedVersion = filter_input(INPUT_POST, 'version', FILTER_VALIDATE_INT, ['op
 if (!$id || !$revisionId || !$expectedVersion) { http_response_code(400); exit('Invalid restore request.'); }
 $pdo->beginTransaction();
 try {
-    $currentQuery = $pdo->prepare('SELECT * FROM announcements WHERE id=? FOR UPDATE');
+    $currentQuery = $pdo->prepare('SELECT * FROM announcements WHERE id=? AND deleted_at IS NULL FOR UPDATE');
     $currentQuery->execute([$id]);
     $current = $currentQuery->fetch();
     if (!$current) { $pdo->rollBack(); http_response_code(404); exit('Announcement not found.'); }

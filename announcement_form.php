@@ -1,7 +1,10 @@
 <?php
 require 'config.php'; require 'functions.php'; require_officer();
-$id=(int)($_GET['id']??0); $post=null;
-if($id){$s=$pdo->prepare("SELECT * FROM announcements WHERE id=?");$s->execute([$id]);$post=$s->fetch();if(!$post) exit('Announcement not found.');}
+$idRaw = $_GET['id'] ?? '0';
+$id = is_string($idRaw) ? filter_var($idRaw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) : false;
+if ($id === false) { http_response_code(400); exit('Invalid announcement.'); }
+$post=null;
+if($id){$s=$pdo->prepare("SELECT * FROM announcements WHERE id=? AND deleted_at IS NULL");$s->execute([$id]);$post=$s->fetch();if(!$post) { http_response_code(404); exit('Announcement not found.'); }}
 $tagNames = $post ? implode(', ', get_announcement_tags($pdo, $id)) : '';
 ?>
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= $post?'Edit':'New' ?> Announcement · CS3B</title><link rel="stylesheet" href="assets/style.css"><script src="assets/theme.js" defer></script></head><body><main class="container narrow"><div class="dashhead"><h1><?= $post?'Edit':'New' ?> Announcement</h1><a href="dashboard">← Dashboard</a></div>

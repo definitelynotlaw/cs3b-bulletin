@@ -10,7 +10,9 @@ A PHP + MySQL class bulletin for BSCS 3B.
 - Officer/admin login
 - Officer directory with profile photos and social links
 - Signed-in password changes and Admin password recovery
-- Announcement CRUD
+- Announcement creation and editing for authenticated staff
+- Public archive for manually archived and expired published announcements
+- Admin/Moderator archive management and permanent deletion; ordinary Delete soft-deletes
 - Draft/published status
 - Contact form for concerns, issues, reports, suggestions
 - Problem reports saved to the officer dashboard and forwarded by email
@@ -20,18 +22,24 @@ A PHP + MySQL class bulletin for BSCS 3B.
 ## Local setup
 1. Create a MySQL database named `cs3b_bulletin`.
 2. Select that database, then import `database.sql`. The import creates all six starter accounts.
-3. Edit `config.php` or set `DB_HOST`, `DB_NAME`, `DB_USER`, and `DB_PASS`.
-4. Make `uploads/` and its `images/`, `videos/`, and `reports/` subdirectories writable by PHP. Profile photos are stored in `uploads/images/`.
-5. Open `./` and sign in at `/login`.
+3. Apply the migration files in `migrations/` in filename order. Run each migration only once against a database that has not already received it.
+4. Edit `config.php` or set `DB_HOST`, `DB_NAME`, `DB_USER`, and `DB_PASS`.
+5. Make `uploads/` and its `images/`, `videos/`, and `reports/` subdirectories writable by PHP. Profile photos are stored in `uploads/images/`.
+6. Open `./` and sign in at `/login`.
+
+Existing installations should apply only migrations that have not already run. In particular, apply `migrations/20261012_phase9_archive_soft_delete.sql` once after phases 1–8. Do not re-import `database.sql` into an existing database.
+
+Permanent announcement deletion removes the announcement and its dependent revisions, acknowledgments, votes, and safely unshared announcement uploads; this cannot be recovered from the application. Soft-deleted announcements remain stored until an authorized Admin or Moderator permanently deletes them.
 
 Database settings can also be provided through `DB_HOST`, `DB_NAME`, `DB_USER`, and `DB_PASS` environment variables. In the supplied dev container, start the preview with `DB_USER=codespace php -d extension=/usr/lib/php/20230831/pdo_mysql.so -S 0.0.0.0:8000` after starting MariaDB.
 
 ## InfinityFree
 1. Create a MySQL database and user in the InfinityFree control panel; note the exact hostname, database name, username, and password shown there.
 2. Open phpMyAdmin for that database, select it, and import `database.sql`. Do not try to create the database in the SQL file; InfinityFree provisions it for you.
-3. Set `$host`, `$db`, `$user`, and `$pass` in `config.php` to the hosting values. Do not use the local development credentials.
-4. Upload the PHP files, `.htaccess`, and `assets/` to `htdocs`; upload the `uploads/` directories as well and ensure PHP can write there.
-5. Visit `/login` directly. The database import is for a new, empty database. For an existing database, do not re-import the whole file. In phpMyAdmin, run this migration once before using profile and password recovery features:
+3. For a new database, apply all files in `migrations/` in filename order; for an existing database, apply only migrations not previously run. Do not re-import the whole file or rerun a completed migration.
+4. Set `$host`, `$db`, `$user`, and `$pass` in `config.php` to the hosting values. Do not use the local development credentials.
+5. Upload the PHP files, `.htaccess`, and `assets/` to `htdocs`; upload the `uploads/` directories as well and ensure PHP can write there.
+6. Visit `/login` directly. In phpMyAdmin, run this migration once before using profile and password recovery features:
 
 ```sql
 ALTER TABLE users

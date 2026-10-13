@@ -22,6 +22,7 @@ function is_officer_or_admin() {
     return in_array(user_role(), ['officer','admin','moderator','president','vice_president','secretary','treasurer'], true);
 }
 function is_admin() { return user_role() === 'admin'; }
+function is_admin_or_moderator() { return in_array(user_role(), ['admin', 'moderator'], true); }
 function require_login() {
     if (!is_logged_in()) {
         header('Location: login');
@@ -42,12 +43,21 @@ function require_admin() {
         exit('Access denied.');
     }
 }
+function require_admin_or_moderator() {
+    require_login();
+    if (!is_admin_or_moderator()) {
+        http_response_code(403);
+        exit('Access denied.');
+    }
+}
 function csrf_token() {
     if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(32));
     return $_SESSION['csrf'];
 }
 function verify_csrf() {
-    if (!hash_equals($_SESSION['csrf'] ?? '', $_POST['csrf'] ?? '')) {
+    $sessionToken = $_SESSION['csrf'] ?? null;
+    $postedToken = $_POST['csrf'] ?? null;
+    if (!is_string($sessionToken) || !is_string($postedToken) || !hash_equals($sessionToken, $postedToken)) {
         http_response_code(419);
         exit('Invalid form token.');
     }
@@ -82,7 +92,7 @@ function format_campus_datetime($value, $format) {
     return $date ? $date->format($format) : '';
 }
 function publish_due_announcements(PDO $pdo) {
-    $statement = $pdo->prepare("UPDATE announcements SET status='published', published_at=publish_at, publish_at=NULL WHERE status='scheduled' AND publish_at IS NOT NULL AND publish_at<=?");
+    $statement = $pdo->prepare("UPDATE announcements SET status='published', published_at=publish_at, publish_at=NULL WHERE status='scheduled' AND deleted_at IS NULL AND archived_at IS NULL AND publish_at IS NOT NULL AND publish_at<=?");
     $statement->execute([campus_now()->format('Y-m-d H:i:s')]);
     return $statement->rowCount();
 }
