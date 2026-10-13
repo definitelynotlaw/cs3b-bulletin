@@ -149,6 +149,18 @@ function snapshot_announcement(PDO $pdo, array $announcement, $editorId, $restor
     ]);
     return (int)$pdo->lastInsertId();
 }
+function upload_extension_for_mime($mime, array $allowed) {
+    if (!is_string($mime) || !in_array($mime, $allowed, true)) return null;
+    return [
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'image/webp' => 'webp',
+    ][$mime] ?? null;
+}
+function safe_upload_filename($mime, array $allowed) {
+    $extension = upload_extension_for_mime($mime, $allowed);
+    return $extension === null ? null : bin2hex(random_bytes(16)) . '.' . $extension;
+}
 function upload_file($field, $dir, $allowed, $maxBytes) {
     if (empty($_FILES[$field]) || $_FILES[$field]['error'] === UPLOAD_ERR_NO_FILE) return null;
     if ($_FILES[$field]['error'] !== UPLOAD_ERR_OK) return null;
@@ -156,10 +168,8 @@ function upload_file($field, $dir, $allowed, $maxBytes) {
 
     $tmp = $_FILES[$field]['tmp_name'];
     $mime = mime_content_type($tmp);
-    if (!in_array($mime, $allowed, true)) return null;
-
-    $ext = strtolower(pathinfo($_FILES[$field]['name'], PATHINFO_EXTENSION));
-    $name = bin2hex(random_bytes(12)) . '.' . $ext;
+    $name = safe_upload_filename($mime, $allowed);
+    if ($name === null) return null;
     $target = __DIR__ . '/' . trim($dir, '/') . '/' . $name;
     if (!move_uploaded_file($tmp, $target)) return null;
     return trim($dir, '/') . '/' . $name;
