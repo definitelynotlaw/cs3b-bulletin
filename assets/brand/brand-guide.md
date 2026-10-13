@@ -8,29 +8,26 @@ The primary symbol retains the Monochrome Version 1 concept: a bold geometric up
 
 - Primary brand: `#183B70` — main accent for links, active filters, CTAs, and focus states.
 - Primary strong: `#102D56` — hover and pressed primary states.
-- Secondary brand: `#C69842` — restrained accent for small highlights and warm emphasis.
 - Neutral ink: `#101828` — symbol and wordmark on light surfaces.
 - Page background: `#F4F6F8` — light app background.
 - Surface: `#FFFFFF` — cards, panels, and search surfaces.
+- Muted surface: `#EEF2F6` — secondary panels and quiet controls.
 - Border: `#DCE5EE` — subtle separators and controls.
 - Text primary: `#1E2A36` — main interface text.
 - Text secondary: `#586875` — metadata and supporting labels.
-- Success: `#1E7B59` — positive state.
-- Warning: `#C69842` — informative or notable state.
-- Error: `#B33F4B` — destructive actions.
 
 ## Dark-theme palette
 
 - Primary brand: `#8BB3FF` — dark-mode accent for primary actions and focus states.
 - Primary strong: `#C9D9FF` — dark-mode hover and active emphasis.
-- Secondary brand: `#F0C778` — warm highlight for dark surfaces.
 - Neutral ink: `#F8FAFC` — white wordmark and symbol on dark surfaces.
 - Page background: `#101821` — dark app background.
 - Surface: `#17222B` — elevated panels.
+- Muted surface: `#202F3B` — secondary panels and quiet controls.
 - Border: `rgba(163,181,203,0.2)` — subtle separators.
 - Text primary: `#EDF2F8` — primary text in dark mode.
-- Success: `#9DE0C2` — dark-mode positive state.
-- Error: `#FFB4BF` — dark-mode destructive state.
+
+Semantic success and danger colors are reserved for status messages and destructive or urgent states; they are not brand colors. All standard interface accents use the blue and neutral tokens above.
 
 ## Logo assets and usage
 
