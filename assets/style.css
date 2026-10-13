@@ -267,6 +267,9 @@ h2 { margin: 0 0 var(--space-4); font-size: 1.45rem; }
 .destructive-action { color: var(--danger); }
 .announcement-title { color: inherit; }
 .announcement-title:hover { color: var(--accent); }
+.announcement-title::after { position: absolute; z-index: 1; inset: 0; content: ""; cursor: pointer; }
+.announcement-card .announcement-title:focus-visible { outline: 0; }
+.announcement-title:focus-visible::after { outline: 3px solid var(--accent); outline-offset: -3px; }
 .announcement-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 var(--space-3); }
 .announcement-tag { padding: 2px 7px; color: var(--muted); background: var(--surface-muted); border-radius: 3px; font-size: .76rem; }
 .post-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); min-width: 0; max-width: 100%; }
@@ -483,10 +486,12 @@ footer { flex: 0 0 auto; margin-top: auto; padding: var(--space-4) max(4%, calc(
 }
 
 	.announcement-card {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		min-width: 0;
 		align-self: stretch;
+		cursor: pointer;
 	}
 
 	.announcement-card__body {
@@ -504,7 +509,7 @@ footer { flex: 0 0 auto; margin-top: auto; padding: var(--space-4) max(4%, calc(
 		margin-top: auto;
 		padding-top: var(--space-4);
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.5fr);
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
 		align-items: center;
 		gap: var(--space-3);
 		min-width: 0;
@@ -512,7 +517,6 @@ footer { flex: 0 0 auto; margin-top: auto; padding: var(--space-4) max(4%, calc(
 	}
 
 	.announcement-card__author,
-	.announcement-card__direct-link,
 	.announcement-card__acknowledgments {
 		min-width: 0;
 		max-width: 100%;
@@ -523,7 +527,10 @@ footer { flex: 0 0 auto; margin-top: auto; padding: var(--space-4) max(4%, calc(
 	.announcement-card__acknowledgments { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2); }
 	.announcement-card__acknowledgments form { min-width: 0; max-width: 100%; margin: 0; }
 	.announcement-card__acknowledgments button { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
-	.announcement-card__direct-link { font-size: .88rem; font-weight: 650; }
+	.announcement-card__acknowledgments form,
+	.announcement-card .media-trigger,
+	.announcement-card .video,
+	.announcement-card a:not(.announcement-title) { position: relative; z-index: 2; }
 
 	.announcement-card img,
 	.announcement-card iframe {
@@ -545,6 +552,5 @@ footer { flex: 0 0 auto; margin-top: auto; padding: var(--space-4) max(4%, calc(
 	@media (max-width: 359px) {
 		.announcement-card__footer { grid-template-columns: minmax(0, 1fr); }
 		.announcement-card__author,
-		.announcement-card__direct-link,
 		.announcement-card__acknowledgments { grid-column: 1; }
 	}
