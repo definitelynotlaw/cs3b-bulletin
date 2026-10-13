@@ -1,14 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" role="img" aria-labelledby="title desc">
   <title id="title">Pilimon Bulletin stacked logo in dark mode</title>
-  <desc id="desc">P symbol and stacked PILIMON and BULLETIN text for dark surfaces.</desc>
-  <g fill="none" stroke="#F8FAFC" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M144 68v160M144 68h52c34 0 58 23 58 52s-24 52-58 52h-52" stroke-width="18"/>
-    <path d="M232 68h32v36" stroke-width="10"/>
-    <path d="M232 104h32" stroke-width="10"/>
-    <path d="M167 138h42" stroke-width="10"/>
+  <desc id="desc">Stacked Pilimon Bulletin logo for dark surfaces.</desc>
+  <g transform="translate(78 28)">
+    <path d="M42 16v160h40c35 0 60-22 60-55S117 16 82 16H42zm18 18h18c22 0 38 13 38 37s-16 37-38 37H60V34z" fill="#F8FAFC"/>
+    <g fill="#F8FAFC">
+      <rect x="69" y="58" width="31" height="8" rx="4"/>
+      <rect x="69" y="76" width="39" height="8" rx="4"/>
+      <rect x="69" y="94" width="28" height="8" rx="4"/>
+    </g>
   </g>
   <g fill="#F8FAFC" font-family="Segoe UI, Arial, Helvetica, sans-serif">
-    <text x="42" y="285" font-size="66" font-weight="700" letter-spacing="5">PILIMON</text>
-    <text x="135" y="340" font-size="22" font-weight="600" letter-spacing="9">BULLETIN</text>
+    <text x="26" y="260" font-size="66" font-weight="700" letter-spacing="5">PILIMON</text>
+    <text x="128" y="323" font-size="22" font-weight="700" letter-spacing="10">BULLETIN</text>
   </g>
 </svg>
