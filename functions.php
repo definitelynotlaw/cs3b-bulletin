@@ -4,6 +4,10 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 function e($value) {
     return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
 }
+function asset_version(string $path): string {
+    $assetPath = __DIR__ . '/' . ltrim($path, '/');
+    return is_file($assetPath) ? substr(hash_file('sha256', $assetPath), 0, 12) : '0';
+}
 function is_logged_in() { return isset($_SESSION['user']); }
 function user_role() { return $_SESSION['user']['role'] ?? null; }
 function role_label($role) {
